@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MovieDetailPresenter @Inject constructor(
     private val movieDetailView: MovieDetailView,
-    private val getVideInformationUseCaseUseCase: IGetVideoInformationUseCase
+    private val getVideoInformationUseCaseUseCase: IGetVideoInformationUseCase
 ) {
 
     fun showMovieDetailInformation(movieDetail: MovieDetail) {
@@ -16,9 +16,14 @@ class MovieDetailPresenter @Inject constructor(
     }
 
     fun getVideoInformation(movieDetail: MovieDetail) {
-        val subscribe = getVideInformationUseCaseUseCase(movieDetail.id).subscribe({
-            val filter = it.filter { video -> video.type == "Trailer" && video.site == "YouTube" }
-            movieDetailView.showVideo(filter[0].key)
+        val subscribe = getVideoInformationUseCaseUseCase(movieDetail.id).subscribe({
+            if (it.isNotEmpty()) {
+                val filter =
+                    it.filter { video -> video.type == "Trailer" && video.site == "YouTube" }
+                if (filter.isNotEmpty()) {
+                    movieDetailView.showVideo(filter[0].key)
+                }
+            }
         }, {
             Log.e(MovieDetailPresenter::class.java.simpleName, it.message)
         })
