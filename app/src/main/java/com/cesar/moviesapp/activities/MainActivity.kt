@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         AndroidInjection.inject(this)
 
-       
+        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(toolbar)
 
         bottomNavigationBar = findViewById(R.id.bottomNavigationView)
